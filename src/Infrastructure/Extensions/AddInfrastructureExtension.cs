@@ -12,7 +12,10 @@ public static class AddInfrastructureExtension
             throw new ApplicationException("Connection string is not configured");
         services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
         {
-            options.UseNpgsql(connectionString);
+            options.UseNpgsql(
+                connectionString, 
+                optionsBuilder => optionsBuilder.MigrationsAssembly("AuthService.Infrastructure")
+            );
         });
         return services;
     }

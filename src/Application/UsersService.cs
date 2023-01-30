@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace AuthService.Application;
@@ -13,7 +8,8 @@ public class UsersService
 
     public async Task<User> Create(User user)
     {
-        await _db.Users.AddAsync(user);
+        _db.Users.Add(user);
+        await _db.SaveChangesAsync(CancellationToken.None);
         return user;
     }
 
@@ -43,14 +39,14 @@ public class UsersService
         var result = _db.Users.Update(user);
         if (result == null)
             return null;
-        await _db.SaveChangesAsync(new CancellationToken());
+        await _db.SaveChangesAsync(CancellationToken.None);
         return user;
     }
 
     public async Task<User?> Delete(User user)
     {
         var result = _db.Users.Remove(user);
-        await _db.SaveChangesAsync(new CancellationToken());
+        await _db.SaveChangesAsync(CancellationToken.None);
         return result.Entity;
     }
 
