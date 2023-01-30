@@ -1,9 +1,12 @@
+using AuthService.Application;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+var connectionString = builder.Configuration.GetValue<string>("ConnectionStrings:Postgres");
+builder.Services.AddInfrastructure(connectionString);
+builder.Services.AddScoped<UsersService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
